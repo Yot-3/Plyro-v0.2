@@ -20,37 +20,37 @@
         </div>
     </div>
     <script>
-        const fs = require('fs');
-        const path = require('path');
-
-        // Load users from users.json
-        const usersPath = path.join(__dirname, 'users.json');
-        let users = [];
-        try {
-            users = JSON.parse(fs.readFileSync(usersPath, 'utf-8'));
-        } catch (err) {
-            console.error('Could not load users.json:', err);
-        }
-
         const form = document.querySelector('form');
         const input = document.querySelector('.input');
 
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const entered = input.value.trim().toLowerCase();
-            const found = users.some(user => user.username.toLowerCase() === entered);
-            if (found) {
-                window.location.href = 'main-menu.html';
-            } else {
-                input.value = '';
-                input.placeholder = 'Invalid credentials!';
-                input.style.border = '2px solid #ff6b6b';
-                setTimeout(() => {
-                    input.placeholder = 'Enter Credentials';
-                    input.style.border = '';
-                }, 1500);
-            }
+           console.log('window.auth:', window.auth);
+        console.log('window.auth.test:', window.auth && window.auth.test && window.auth.test());
+        console.log('window.auth.getUsers:', window.auth && window.auth.getUsers && window.auth.getUsers());
+   
+        
+        
+        window.auth.getUsers().then(users => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const entered = input.value.trim().toLowerCase();
+                const found = users.some(user => user.username.toLowerCase() === entered);
+                if (found) {
+                    window.location.href = 'main-menu.html';
+                } else {
+                    input.value = '';
+                    input.placeholder = 'Invalid credentials!';
+                    input.style.border = '2px solid #ff6b6b';
+                    setTimeout(() => {
+                        input.placeholder = 'Enter Credentials';
+                        input.style.border = '';
+                    }, 1500);
+                }
+            });
+        }).catch(err => {
+            input.placeholder = 'User DB error!';
+            input.style.border = '2px solid #ff6b6b';
         });
-    </script>
+      </script>
+
 </body>
 </html>

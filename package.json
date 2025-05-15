@@ -7,10 +7,12 @@
     "start": "electron ."
   },
   "dependencies": {
-    "electron": "^25.0.0"
+    "sqlite3": "^5.1.7"
   },
-  "devDependencies": {},
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^36.2.1"
+  }
 }

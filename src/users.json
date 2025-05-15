@@ -1,5 +1,4 @@
 [
     { "username": "admin" },
-    { "username": "manager" },
-    { "username": "user1" }
+    { "username": "manager" }
 ]

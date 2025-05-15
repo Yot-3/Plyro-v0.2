@@ -55,15 +55,45 @@
         // Max number of rows
         const maxRows = 35;
         const tbody = document.getElementById('inv-table-body');
-        for (let i = 0; i < maxRows; i++) {
-            const tr = document.createElement('tr');
-            for (let j = 0; j < 4; j++) {
-                const td = document.createElement('td');
-                td.innerHTML = '&nbsp;';
-                tr.appendChild(td);
+
+        console.log('window.db:', window.db);
+        console.log('window.db.getInventory:', window.db && window.db.getInventory);
+
+        // Fill table with DB data
+        window.db.getInventory().then(rows => {
+            console.log('DB rows:', rows); // <--- Add this
+            // Fill with DB rows
+            for (let i = 0; i < maxRows; i++) {
+                const tr = document.createElement('tr');
+                if (rows[i]) {
+                    tr.innerHTML = `
+                        <td>${rows[i].ITEM_NUM ?? ''}</td>
+                        <td>${rows[i].DESCRIPTION ?? ''}</td>
+                        <td>${rows[i].QIS ?? ''}</td>
+                        <td>${rows[i]['QOH TOTAL'] ?? ''}</td>
+                    `;
+                } else {
+                    for (let j = 0; j < 4; j++) {
+                        const td = document.createElement('td');
+                        td.innerHTML = '&nbsp;';
+                        tr.appendChild(td);
+                    }
+                }
+                tbody.appendChild(tr);
             }
-            tbody.appendChild(tr);
-        }
+        }).catch(err => {
+            // If DB fails, just fill with blanks
+            for (let i = 0; i < maxRows; i++) {
+                const tr = document.createElement('tr');
+                for (let j = 0; j < 4; j++) {
+                    const td = document.createElement('td');
+                    td.innerHTML = '&nbsp;';
+                    tr.appendChild(td);
+                }
+                tbody.appendChild(tr);
+            }
+            console.error('DB error:', err);
+        });
 
         // Open modal when Edit Items button is clicked
         document.querySelector('.side-btn').onclick = function() {
