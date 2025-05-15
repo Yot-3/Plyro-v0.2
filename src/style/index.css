@@ -1,0 +1,110 @@
+body {
+    margin: 0;
+    height: 100vh;
+    background: radial-gradient(circle, #bdbcbc 0%, #4d4d4d 100%);
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.container {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-box {
+    background: radial-gradient(circle at 50% 40%, #575555 0%, #000000 100%);
+    box-shadow: 0 0 80px #111 inset;
+    padding: 48px 64px 48px 64px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 480px;
+    position: relative;
+    border: 6px solid #222;
+}
+
+.login-box::before,
+.login-box::after {
+    content: "";
+    position: absolute;
+    left: -14px; right: -14px;
+    top: -14px; bottom: -14px;
+    border: 6px solid #222;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.login-box::after {
+    left: -24px; right: -24px;
+    top: -24px; bottom: -24px;
+    border: 6px solid #222;
+}
+
+.logo-img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 4px solid #424141;
+}
+
+.title {
+    color: #ddd;
+    font-size: 64px;
+    font-weight: 400;
+    letter-spacing: 2px;
+    margin: 0 0 6px 0;
+    text-shadow: 4px 4px 0 #000000, 0 0 16px rgba(0, 0, 0, 0.133);
+}
+
+.divider {
+    width: 100%;
+    border: none;
+    border-top: 3px solid #222;
+    margin: 0 0 40px 0;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.input {
+    width: 350px;
+    padding: 16px;
+    font-size: 1.3em;
+    text-align: center;
+    border: none;
+    border-radius: 2px;
+    margin-bottom: 32px;
+    background: #fff;
+    color: #222;
+    box-shadow: 0 2px 8px #0002;
+    outline: none;
+    transition: box-shadow 0.2s;
+}
+
+.input:focus {
+    box-shadow: 0 0 0 2px #ff6b6b;
+}
+
+.submit-btn {
+    width: 350px;
+    height: 50px;
+    padding: 12px 0;
+    background: #ff6b6b;
+    color: #fff;
+    font-size: 1.3em;
+    font-weight: bold;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background 0.2s;
+    letter-spacing: 1px;
+}
+
+.submit-btn:hover {
+    background: #ff4b4b;
+}

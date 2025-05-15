@@ -1,0 +1,131 @@
+body {
+    margin: 0;
+    height: 100vh;
+    background: radial-gradient(circle, #bdbcbc 0%, #4d4d4d 100%);
+    font-family: 'Segoe UI', Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.top-bar {
+    width: 100vw;
+    background: linear-gradient(90deg, #888 0%, #444 100%);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0 0 0 12px;
+    height: 80px;
+    border-bottom: 4px double #000000;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.prylo-title {
+    color: #ddd;
+    font-size: 64px;
+    font-weight: 400;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 0 #222, 0 0 8px #fff2;
+    line-height: 80px;
+}
+
+.logoff-btn {
+    position: absolute;
+    left: 24px;
+    top: 90px;
+    padding: 10px 48px;
+    background: #ff6b6b;
+    color: #fff;
+    font-size: 1.3em;
+    font-weight: 400;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background 0.2s;
+    text-align: center;
+    text-decoration: none;
+    letter-spacing: 1px;
+}
+
+.logoff-btn:hover {
+    background: #ff4b4b;
+}
+
+.pos-title {
+    color: #ddd;
+    font-size: 64px;
+    font-weight: 400;
+    letter-spacing: 2px;
+    margin: 0px 0 32px 0;
+    text-shadow: 2px 2px 0 #222, 0 0 8px #fff2;
+    text-align: center;
+}
+
+.pos-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    width: 60vw;
+    max-width: 800px;
+    min-width: 400px;
+    margin: 0 auto;
+    margin-bottom: auto;
+}
+
+.pos-btn {
+    background: #666;
+    color: #fff;
+    font-size: 2em;
+    font-weight: bold;
+    text-align: center;
+    padding: -2px 0;
+    width: 100%;
+    box-shadow: 0 2px 8px #0002;
+    border: none;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 80px;
+}
+
+.bottom-bar {
+    width: 100vw;
+    background: linear-gradient(90deg, #888 0%, #444 100%);
+    border-top: 4px solid #222;
+    border-bottom: 4px solid #222;
+    box-sizing: border-box;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    justify-content: flex-start;
+}
+
+.bottom-bar::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 4px;
+}
+
+.back-btn {
+    margin-left: 24px;
+    padding: 10px 48px;
+    background: #ff6b6b;
+    color: #fff;
+    font-size: 1.3em;
+    font-weight: 400;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background 0.2s;
+    text-align: center;
+    text-decoration: none;
+    letter-spacing: 1px;
+}
+
+.back-btn:hover {
+    background: #ff4b4b;
+}

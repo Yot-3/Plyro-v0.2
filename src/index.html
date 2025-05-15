@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Prylo</title>
+    <link rel="stylesheet" href="style/index.css">
+</head>
+<body>
+    <div class="container">
+        <div class="login-box">
+            <div class="logo-circle">
+                <img src="../images/SS.png" class="logo-img">
+            </div>
+            <h1 class="title">PRYLO</h1>
+            <hr class="divider">
+            <form>
+                <input type="text" class="input" autocomplete="off" placeholder="Enter Credentials" required>
+                <button type="submit" class="submit-btn">SUBMIT</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        const fs = require('fs');
+        const path = require('path');
+
+        // Load users from users.json
+        const usersPath = path.join(__dirname, 'users.json');
+        let users = [];
+        try {
+            users = JSON.parse(fs.readFileSync(usersPath, 'utf-8'));
+        } catch (err) {
+            console.error('Could not load users.json:', err);
+        }
+
+        const form = document.querySelector('form');
+        const input = document.querySelector('.input');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const entered = input.value.trim().toLowerCase();
+            const found = users.some(user => user.username.toLowerCase() === entered);
+            if (found) {
+                window.location.href = 'main-menu.html';
+            } else {
+                input.value = '';
+                input.placeholder = 'Invalid credentials!';
+                input.style.border = '2px solid #ff6b6b';
+                setTimeout(() => {
+                    input.placeholder = 'Enter Credentials';
+                    input.style.border = '';
+                }, 1500);
+            }
+        });
+    </script>
+</body>
+</html>

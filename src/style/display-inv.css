@@ -1,0 +1,127 @@
+body {
+    margin: 0;
+    height: 100vh;
+    background: radial-gradient(circle, #bdbcbc 0%, #4d4d4d 100%);
+    font-family: 'Segoe UI', Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.top-bar {
+    width: 100vw;
+    background: linear-gradient(90deg, #888 0%, #444 100%);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0 0 0 16px;
+    height: 80px;
+    border-bottom: 6px double #222;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.prylo-title {
+    color: #ddd;
+    font-size: 64px;
+    font-weight: 400;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 0 #222, 0 0 8px #fff2;
+    line-height: 80px;
+}
+
+.main-area {
+    display: flex;
+    flex: 1;
+    width: 100vw;
+    box-sizing: border-box;
+    margin-top: 8px;
+    margin-bottom: 0;
+    min-height: 0;
+}
+
+.inv-panel {
+    background: #d3d3d3;
+    flex: 1 1 0;
+    margin-left: 20px;
+    margin-top: 8px;
+    margin-bottom: 12px;
+    margin-right: 0;
+    border: 4px solid #222;
+    border-radius: 0;
+    min-width: 0;
+    min-height: 600px;
+}
+
+.side-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 260px;
+    min-width: 220px;
+    background: none;
+    margin: 12px 20px 0 12px;
+}
+
+.side-btn {
+    background: #666;
+    color: #fff;
+    font-size: 1.3em;
+    font-weight: bold;
+    text-align: center;
+    padding: 16px 0;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 8px #0002;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+    letter-spacing: 1px;
+    user-select: none;
+}
+
+.side-btn:last-child {
+    margin-bottom: 0;
+}
+
+.side-btn:hover {
+    background: #888;
+}
+
+.bottom-bar {
+    width: 100vw;
+    background: linear-gradient(90deg, #888 0%, #444 100%);
+    border-top: 4px solid #222;
+    border-bottom: 4px solid #222;
+    box-sizing: border-box;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    justify-content: space-between;
+}
+
+.bottom-bar::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 4px;
+}
+
+.back-btn, .main-menu-btn {
+    margin: 0 24px;
+    padding: 10px 48px;
+    background: #ff6b6b;
+    color: #fff;
+    font-size: 1.3em;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+    text-align: center;
+    text-decoration: underline;
+    letter-spacing: 1px;
+}
+
+.back-btn:hover, .main-menu-btn:hover {
+    background: #ff4b4b;
+}
