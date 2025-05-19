@@ -76,5 +76,39 @@ contextBridge.exposeInMainWorld('db', {
                 }
             );
         });
+    },
+    getItem: (item_num) => {
+        return new Promise((resolve, reject) => {
+            const dbPath = path.join(__dirname, 'inventory.db');
+            const db = new sqlite3.Database(dbPath, sqlite3.OPEN_READONLY, (err) => {
+                if (err) return reject(err);
+            });
+            db.get(
+                'SELECT SKU, ITEM_NUM, DESCRIPTION, QIS FROM inventory WHERE ITEM_NUM = ?',
+                [item_num],
+                (err, row) => {
+                    db.close();
+                    if (err) return reject(err);
+                    resolve(row);
+                }
+            );
+        });
+    },
+    updateItem: (item) => {
+        return new Promise((resolve, reject) => {
+            const dbPath = path.join(__dirname, 'inventory.db');
+            const db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE, (err) => {
+                if (err) return reject(err);
+            });
+            db.run(
+                'UPDATE inventory SET SKU = ?, DESCRIPTION = ?, QIS = ?, [QOH TOTAL] = ? WHERE ITEM_NUM = ?',
+                [item.sku, item.description, item.qis, item.qis, item.item_num],
+                function(err) {
+                    db.close();
+                    if (err) return reject(err);
+                    resolve({ success: true });
+                }
+            );
+        });
     }
 });

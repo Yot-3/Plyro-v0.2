@@ -84,6 +84,25 @@
             </form>
         </div>
     </div>
+    <!-- Edit Item Modal -->
+    <div id="editItemModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-title">Edit Item</span>
+                <button class="close-btn" onclick="closeEditItemModal()">&times;</button>
+            </div>
+            <form id="editItemForm" class="modal-form">
+                <label>Item # to Edit: <input type="text" name="item_num" id="editItemNum" required></label>
+                <label>SKU: <input type="text" name="sku" id="editSku" required></label>
+                <label>Description: <input type="text" name="description" id="editDescription" required></label>
+                <label>QIS: <input type="number" name="qis" id="editQis" required></label>
+                <div class="modal-actions">
+                    <button type="button" class="modal-action-btn" id="fetchItemBtn">Fetch</button>
+                    <button type="submit" class="modal-action-btn">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
     <script>
         // Max number of rows
         const maxRows = 35;
@@ -268,11 +287,68 @@
             });
         }
 
-        // Refresh every 3 seconds
-        setInterval(refreshTable, 3000);
+        // Refresh every 1 seconds
+        setInterval(refreshTable, 1000);
 
         // Also call once on page load
         refreshTable();
+
+        // Open Edit Item modal when Edit button is clicked in Edit Items modal
+        document.querySelectorAll('.modal-action-btn')[1].onclick = function(e) {
+            e.preventDefault();
+            document.getElementById('editItemModal').style.display = 'flex';
+        };
+
+        // Close Edit Item modal
+        function closeEditItemModal() {
+            document.getElementById('editItemModal').style.display = 'none';
+            document.getElementById('editItemForm').reset();
+        }
+
+        // Optional: close Edit Item modal when clicking outside modal-content
+        window.addEventListener('click', function(event) {
+            const editModal = document.getElementById('editItemModal');
+            if (event.target === editModal) {
+                closeEditItemModal();
+            }
+        });
+
+        // Fetch item data when Fetch button is clicked
+        document.getElementById('fetchItemBtn').onclick = function(e) {
+            e.preventDefault();
+            const itemNum = document.getElementById('editItemNum').value;
+            if (!itemNum) return alert('Enter an Item Number to fetch.');
+            window.db.getItem(itemNum).then(item => {
+                if (!item) {
+                    alert('Item not found!');
+                    return;
+                }
+                document.getElementById('editSku').value = item.SKU ?? '';
+                document.getElementById('editDescription').value = item.DESCRIPTION ?? '';
+                document.getElementById('editQis').value = item.QIS ?? '';
+            }).catch(err => {
+                alert('Failed to fetch item: ' + err.message);
+            });
+        };
+
+        // Handle Edit Item form submission
+        document.getElementById('editItemForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const form = e.target;
+            const item = {
+                item_num: form.item_num.value,
+                sku: form.sku.value,
+                description: form.description.value,
+                qis: parseInt(form.qis.value, 10)
+            };
+            window.db.updateItem(item).then(() => {
+                closeEditItemModal();
+                form.reset();
+                refreshTable();
+            }).catch(err => {
+                alert('Failed to update item: ' + err.message);
+            });
+        });
     </script>
 </body>
 </html>
