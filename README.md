@@ -26,6 +26,7 @@ electron-app
 │       ├── main-menu.css          # CSS styles for the main menu (dashboard) page
 │       ├── point-of-sale.css      # CSS styles for the Point of Sale page
 │       ├── purchase-orders.css    # CSS styles for the Purchase Orders page
+│       ├── template-view.css      # CSS styles for the template view page
 │       └── template.css           # CSS styles for the template page
 │
 ├── package.json         # Configuration file for npm
