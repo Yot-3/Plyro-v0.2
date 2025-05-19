@@ -1,4 +1,4 @@
-###PLYRO
+   # PLYRO
 
 This is a simple baseline inventory management system that I took on to replace an outdated system that is currently being used at the company I am working at, I plan on taking on this project fully as it is great practice with database infrastructure and html/javascript/css.
 
