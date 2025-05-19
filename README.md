@@ -9,11 +9,26 @@ This is a simple baseline inventory management system that I took on to replace 
 ```
 electron-app
 ├── src
-│   ├── main.js          # Main process of the Electron application
-│   ├── renderer.js      # Renderer process for DOM manipulation
-│   ├── index.html       # HTML structure of the application
+│   ├── main.js                   # Main process of the Electron application
+│   ├── renderer.js               # Renderer process for DOM manipulation
+│   ├── preload.js                # Preload scripts
+│   ├── user.json                 # User credential information
+│   ├── cycle-counts.html         # HTML structure of the cycle counts page
+│   ├── display-inv.html          # HTML structure of the Inventory Management page
+│   ├── index.html                # HTML structure of the login page
+│   ├── main-menu.html            # HTML structure of the Main Menu (dashboard) page
+│   ├── point-of-sale.html        # HTML structure of the Point of Sale page
+│   ├── purchase-order.html       # HTML structure of the Purchase Orders page
+│   ├──template.html              # HTML structure of the Template page 
 │   └── style
-│       └── index.css    # CSS styles for the application
+│       ├── cycle-counts.css       # CSS styles for the cycle counts page
+│       ├── display-inv.css        # CSS styles for the Inventory Management Screen
+│       ├── index.css              # CSS styles for the login page
+│       ├── main-menu.css          # CSS styles for the main menu (dashboard) page
+│       ├── point-of-sale.css      # CSS styles for the Point of Sale page
+│       ├── purchase-orders.css    # CSS styles for the Purchase Orders page
+│       └── template.css           # CSS styles for the template page
+│
 ├── package.json         # Configuration file for npm
 └── README.md            # Documentation for the project
 ```
