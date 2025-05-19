@@ -69,6 +69,21 @@
             </form>
         </div>
     </div>
+    <!-- Remove Item Modal -->
+    <div id="removeItemModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-title">Remove Item</span>
+                <button class="close-btn" onclick="closeRemoveItemModal()">&times;</button>
+            </div>
+            <form id="removeItemForm" class="modal-form">
+                <label>Item # to Remove: <input type="text" name="item_num" required></label>
+                <div class="modal-actions">
+                    <button type="submit" class="modal-action-btn">Remove</button>
+                </div>
+            </form>
+        </div>
+    </div>
     <script>
         // Max number of rows
         const maxRows = 35;
@@ -191,9 +206,65 @@
             });
         });
 
+        // Open Remove Item modal when Delete button is clicked in Edit Items modal
+        document.querySelectorAll('.modal-action-btn')[2].onclick = function(e) {
+            e.preventDefault();
+            document.getElementById('removeItemModal').style.display = 'flex';
+        };
+
+        // Close Remove Item modal
+        function closeRemoveItemModal() {
+            document.getElementById('removeItemModal').style.display = 'none';
+        }
+
+        // Optional: close Remove Item modal when clicking outside modal-content
+        window.addEventListener('click', function(event) {
+            const removeModal = document.getElementById('removeItemModal');
+            if (event.target === removeModal) {
+                closeRemoveItemModal();
+            }
+        });
+
+        // Handle Remove Item form submission
+        document.getElementById('removeItemForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const form = e.target;
+            const item_num = form.item_num.value;
+            window.db.removeItem(item_num).then(() => {
+                // Close modal
+                closeRemoveItemModal();
+                // Optionally reset form
+                form.reset();
+                // Refresh table
+                refreshTable();
+            }).catch(err => {
+                alert('Failed to remove item: ' + err.message);
+            });
+        });
+
         function refreshTable() {
             window.db.getInventory().then(rows => {
-                // ... your code to update the table ...
+                const tbody = document.getElementById('inv-table-body');
+                tbody.innerHTML = '';
+                const maxRows = 35;
+                for (let i = 0; i < maxRows; i++) {
+                    const tr = document.createElement('tr');
+                    if (rows[i]) {
+                        tr.innerHTML = `
+                            <td>${rows[i].ITEM_NUM ?? ''}</td>
+                            <td>${rows[i].DESCRIPTION ?? ''}</td>
+                            <td>${rows[i].QIS ?? ''}</td>
+                            <td>${rows[i]['QOH TOTAL'] ?? ''}</td>
+                        `;
+                    } else {
+                        for (let j = 0; j < 4; j++) {
+                            const td = document.createElement('td');
+                            td.innerHTML = '&nbsp;';
+                            tr.appendChild(td);
+                        }
+                    }
+                    tbody.appendChild(tr);
+                }
             });
         }
 

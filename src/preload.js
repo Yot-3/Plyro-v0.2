@@ -59,5 +59,22 @@ contextBridge.exposeInMainWorld('db', {
                 }
             );
         });
+    },
+    removeItem: (item_num) => {
+        return new Promise((resolve, reject) => {
+            const dbPath = path.join(__dirname, 'inventory.db');
+            const db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE, (err) => {
+                if (err) return reject(err);
+            });
+            db.run(
+                'DELETE FROM inventory WHERE ITEM_NUM = ?',
+                [item_num],
+                function(err) {
+                    db.close();
+                    if (err) return reject(err);
+                    resolve({ success: true });
+                }
+            );
+        });
     }
 });
