@@ -46,11 +46,21 @@ body {
     margin-left: 20px;
     margin-top: 0;
     margin-bottom: 12px;
-    margin-right: 0;
+    margin-right: 20px;
     border: 4px solid #222;
     border-radius: 0;
     min-width: 0;
     min-height: 600px;
+    text-align: center;
+}
+
+.h2 {
+    font-size: 2em;
+    font-weight: 700;
+    color: #222;
+    margin: 0;
+    padding: 0;
+    text-align: center;
 }
 
 .side-panel {
@@ -126,4 +136,92 @@ body {
 
 .back-btn:hover, .main-menu-btn:hover {
     background: #ff4b4b;
+}
+
+.template-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: flex-start;
+    height: 100%;
+}
+
+.template-btn {
+    min-width: 180px;
+    padding: 16px 12px;
+    margin-bottom: 8px;
+    margin-left: 4px;
+    margin-top: 4px;
+    background: #444;
+    color: #fff;
+    border: none;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background 0.2s;
+    word-break: break-word;
+}
+
+.template-btn:hover {
+    background: #ff6b6b;
+}
+
+.inv-table {
+    border-collapse: collapse;
+    width: 90%;
+    margin: 2px auto 0 auto;
+    background: #fff;
+}
+.inv-table th, .inv-table td {
+    border: 1px solid #aaa;
+    padding: 0;
+    text-align: center;
+    font-size: 1em;
+}
+.inv-table th {
+    background: #444;
+    color: #fff;
+    font-weight: bold;
+}
+
+/* Aligns the title and SKU input on the same row, spaced apart */
+.template-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 5px;
+    width: 100%;
+}
+
+/* Styles the template title */
+#template-title {
+    text-transform: uppercase;
+    margin: 0;
+    margin-left: 30px;
+    font-size: 2em;
+    font-weight: 700;
+    color: #222;
+    letter-spacing: 1px;
+}
+
+/* Styles the SKU input and label */
+.sku-input-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-right: 30px;
+}
+
+.sku-input-group label {
+    font-weight: bold;
+    font-size: 1.1em;
+    color: #222;
+}
+
+#sku-input {
+    width: 140px;
+    padding: 4px 8px;
+    font-size: 1em;
+    border: 1px solid #aaa;
+    background: #f8f8f8;
+    color: #222;
 }

@@ -110,5 +110,81 @@ contextBridge.exposeInMainWorld('db', {
                 }
             );
         });
-    }
+    },
+    saveTemplate: (name, items) => {
+        return new Promise((resolve, reject) => {
+            const db = new sqlite3.Database(dbPath);
+            db.serialize(() => {
+                db.run('BEGIN TRANSACTION');
+                db.run('INSERT INTO templates (name) VALUES (?)', [name], function(err) {
+                    if (err) {
+                        db.run('ROLLBACK');
+                        db.close();
+                        return reject(err);
+                    }
+                    const templateId = this.lastID;
+                    const stmt = db.prepare('INSERT INTO template_items (template_id, item_num, description, qoh, qis) VALUES (?, ?, ?, ?, ?)');
+                    for (const item of items) {
+                        stmt.run(templateId, item.item_num, item.description, item.qoh, item.qis);
+                    }
+                    stmt.finalize(err => {
+                        if (err) {
+                            db.run('ROLLBACK');
+                            db.close();
+                            return reject(err);
+                        }
+                        db.run('COMMIT', err => {
+                            db.close();
+                            if (err) return reject(err);
+                            resolve(templateId);
+                        });
+                    });
+                });
+            });
+        });
+    },
+    getTemplates: () => {
+        return new Promise((resolve, reject) => {
+            const db = new sqlite3.Database(dbPath);
+            db.all('SELECT id, name FROM templates ORDER BY created_at DESC', [], (err, rows) => {
+                db.close();
+                if (err) return reject(err);
+                resolve(rows);
+            });
+        });
+    },
+    getTemplateItems: (templateId) => {
+        return new Promise((resolve, reject) => {
+            const db = new sqlite3.Database(dbPath);
+            db.all(
+                'SELECT item_num, description, qoh, qis FROM template_items WHERE template_id = ?',
+                [templateId],
+                (err, rows) => {
+                    db.close();
+                    if (err) return reject(err);
+                    resolve(rows);
+                }
+            );
+        });
+    },
 });
+
+const dbPath = path.join(__dirname, 'inventory.db');
+const db = new sqlite3.Database(dbPath);
+db.serialize(() => {
+    db.run(`CREATE TABLE IF NOT EXISTS templates (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )`);
+    db.run(`CREATE TABLE IF NOT EXISTS template_items (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        template_id INTEGER NOT NULL,
+        item_num TEXT NOT NULL,
+        description TEXT,
+        qoh INTEGER,
+        qis INTEGER,
+        FOREIGN KEY (template_id) REFERENCES templates(id) ON DELETE CASCADE
+    )`);
+});
+db.close();

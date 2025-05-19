@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>View Template</title>
+    <link rel="stylesheet" href="style/cycle-counts.css">
+</head>
+<body>
+    <div class="top-bar">
+        <span class="prylo-title">PRYLO</span>
+    </div>
+    <div class="main-area">
+        <div class="inv-panel">
+            <div class="template-header-row">
+                <h2 id="template-title"></h2>
+                <div class="sku-input-group">
+                    <label for="sku-input">SKU:</label>
+                    <input id="sku-input" type="text" />
+                </div>
+            </div>
+            <table class="inv-table">
+                <thead>
+                    <tr>
+                        <th style="width: 100px;">Item #</th>
+                        <th style="width: 360px;">Description</th>
+                        <th style="width: 60px;">QOH</th>
+                        <th style="width: 60px;">QIS</th>
+                    </tr>
+                </thead>
+                <tbody id="template-items-tbody"></tbody>
+            </table>
+        </div>
+    </div>
+    <div class="bottom-bar">
+        <button class="back-btn" onclick="window.location.href='cycle-counts.html'">BACK</button>
+        <button class="main-menu-btn" onclick="window.location.href='main-menu.html'">MAIN MENU</button>
+    </div>
+    
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const templateId = urlParams.get('templateId');
+
+        if (!templateId) {
+            document.getElementById('template-title').textContent = "Template not found.";
+        } else {
+            // Fetch template name
+            window.db.getTemplates().then(templates => {
+                const tpl = templates.find(t => t.id == templateId);
+                if (!tpl) {
+                    document.getElementById('template-title').textContent = "Template not found.";
+                    return;
+                }
+                document.getElementById('template-title').textContent = tpl.name;
+
+                // Fetch template items
+                window.db.getTemplateItems(templateId).then(items => {
+                    const tbody = document.getElementById('template-items-tbody');
+                    tbody.innerHTML = '';
+                    console.log('Template items:', items); // <--- Add this line
+                    if (items.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="4">No items in this template.</td></tr>';
+                    } else {
+                        items.forEach(item => {
+                            const tr = document.createElement('tr');
+                            tr.innerHTML = `
+                                <td>${item.item_num}</td>
+                                <td>${item.description}</td>
+                                <td>${item.qoh}</td>
+                                <td>${item.qis}</td>
+                            `;
+                            tbody.appendChild(tr);
+                        });
+                    }
+                });
+            });
+        }
+    </script>
+</body>
+</html>
