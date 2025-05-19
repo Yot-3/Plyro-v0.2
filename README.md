@@ -12,13 +12,13 @@ electron-app
 │   ├── renderer.js               # Renderer process for DOM manipulation
 │   ├── preload.js                # Preload scripts
 │   ├── user.json                 # User credential information
-│   ├── cycle-counts.html         # HTML structure of the cycle counts page
+│   ├── cycle-counts.html         # HTML structure of the cycle counts page -Not Operational
 │   ├── display-inv.html          # HTML structure of the Inventory Management page
-│   ├── index.html                # HTML structure of the login page
+│   ├── index.html                # HTML structure of the Login page
 │   ├── main-menu.html            # HTML structure of the Main Menu (dashboard) page
-│   ├── point-of-sale.html        # HTML structure of the Point of Sale page
-│   ├── purchase-order.html       # HTML structure of the Purchase Orders page
-│   ├──template.html              # HTML structure of the Template page 
+│   ├── point-of-sale.html        # HTML structure of the Point of Sale page - Not Operational
+│   ├── purchase-order.html       # HTML structure of the Purchase Orders page - Not Operational
+│   ├──template.html              # HTML structure of the Template page - Not Operational
 │   └── style
 │       ├── cycle-counts.css       # CSS styles for the cycle counts page
 │       ├── display-inv.css        # CSS styles for the Inventory Management Screen
