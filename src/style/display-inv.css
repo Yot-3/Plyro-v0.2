@@ -251,3 +251,27 @@ body {
     background: #ff6b6b;
 }
 
+/* Add Item Modal Form */
+.modal-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px;
+}
+
+.modal-form label {
+    display: flex;
+    flex-direction: column;
+    font-size: 1em;
+    color: #444;
+}
+
+.modal-form input[type="text"],
+.modal-form input[type="number"] {
+    padding: 8px;
+    font-size: 1em;
+    border: 1px solid #bbb;
+    border-radius: 4px;
+    margin-top: 4px;
+}
+

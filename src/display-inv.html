@@ -51,6 +51,24 @@
             </div>
         </div>
     </div>
+    <!-- Add Item Modal -->
+    <div id="addItemModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-title">Add Item</span>
+                <button class="close-btn" onclick="closeAddItemModal()">&times;</button>
+            </div>
+            <form id="addItemForm" class="modal-form">
+                <label>SKU: <input type="text" name="sku" required></label>
+                <label>Item #: <input type="text" name="item_num" required></label>
+                <label>Description: <input type="text" name="description" required></label>
+                <label>QIS: <input type="number" name="qis" required></label>
+                <div class="modal-actions">
+                    <button type="submit" class="modal-action-btn">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
     <script>
         // Max number of rows
         const maxRows = 35;
@@ -110,6 +128,80 @@
                 closeModal();
             }
         }
+
+        // Open Add Item modal when Add button is clicked in Edit Items modal
+        document.querySelectorAll('.modal-action-btn')[0].onclick = function(e) {
+            e.preventDefault();
+            document.getElementById('addItemModal').style.display = 'flex';
+        };
+
+        // Close Add Item modal
+        function closeAddItemModal() {
+            document.getElementById('addItemModal').style.display = 'none';
+        }
+
+        // Optional: close Add Item modal when clicking outside modal-content
+        window.addEventListener('click', function(event) {
+            const addModal = document.getElementById('addItemModal');
+            if (event.target === addModal) {
+                closeAddItemModal();
+            }
+        });
+
+        document.getElementById('addItemForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const form = e.target;
+            const item = {
+                sku: form.sku.value,
+                item_num: form.item_num.value,
+                description: form.description.value,
+                qis: parseInt(form.qis.value, 10)
+            };
+            window.db.addItem(item).then(() => {
+                // Close modal
+                document.getElementById('addItemModal').style.display = 'none';
+                // Optionally reset form
+                form.reset();
+                // Refresh table
+                window.db.getInventory().then(rows => {
+                    const tbody = document.getElementById('inv-table-body');
+                    tbody.innerHTML = '';
+                    const maxRows = 35;
+                    for (let i = 0; i < maxRows; i++) {
+                        const tr = document.createElement('tr');
+                        if (rows[i]) {
+                            tr.innerHTML = `
+                                <td>${rows[i].ITEM_NUM ?? ''}</td>
+                                <td>${rows[i].DESCRIPTION ?? ''}</td>
+                                <td>${rows[i].QIS ?? ''}</td>
+                                <td>${rows[i]['QOH TOTAL'] ?? ''}</td>
+                            `;
+                        } else {
+                            for (let j = 0; j < 4; j++) {
+                                const td = document.createElement('td');
+                                td.innerHTML = '&nbsp;';
+                                tr.appendChild(td);
+                            }
+                        }
+                        tbody.appendChild(tr);
+                    }
+                });
+            }).catch(err => {
+                alert('Failed to add item: ' + err.message);
+            });
+        });
+
+        function refreshTable() {
+            window.db.getInventory().then(rows => {
+                // ... your code to update the table ...
+            });
+        }
+
+        // Refresh every 3 seconds
+        setInterval(refreshTable, 3000);
+
+        // Also call once on page load
+        refreshTable();
     </script>
 </body>
 </html>

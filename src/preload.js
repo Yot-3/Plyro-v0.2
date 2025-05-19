@@ -32,8 +32,8 @@ contextBridge.exposeInMainWorld('auth', {
 contextBridge.exposeInMainWorld('db', {
     getInventory: () => {
         return new Promise((resolve, reject) => {
-            const dbPath = path.join(__dirname, 'inventory.db'); // <-- your DB file
-            const db = new sqlite3.Database(dbPath, sqlite3.OPEN_READONLY, (err) => {
+            const dbPath = path.join(__dirname, 'inventory.db');
+            const db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE, (err) => {
                 if (err) return reject(err);
             });
             db.all('SELECT ITEM_NUM, DESCRIPTION, QIS, [QOH TOTAL] FROM inventory', [], (err, rows) => {
@@ -41,6 +41,23 @@ contextBridge.exposeInMainWorld('db', {
                 if (err) return reject(err);
                 resolve(rows);
             });
+        });
+    },
+    addItem: (item) => {
+        return new Promise((resolve, reject) => {
+            const dbPath = path.join(__dirname, 'inventory.db');
+            const db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE, (err) => {
+                if (err) return reject(err);
+            });
+            db.run(
+                'INSERT INTO inventory (SKU, ITEM_NUM, DESCRIPTION, QIS, [QOH TOTAL]) VALUES (?, ?, ?, ?, ?)',
+                [item.sku, item.item_num, item.description, item.qis, item.qis], // QOH TOTAL = QIS for new item
+                function(err) {
+                    db.close();
+                    if (err) return reject(err);
+                    resolve({ success: true });
+                }
+            );
         });
     }
 });
