@@ -1,11 +1,23 @@
+:root {
+    --primary-bg: #bdbcbc;
+    --secondary-bg: #4d4d4d;
+    --panel-bg: #d3d3d3;
+    --border-color: #222;
+    --header-bg: #444;
+    --header-text: #fff;
+    --btn-bg: #666;
+    --btn-hover: #888;
+    --action-bg: #ff6b6b;
+    --action-hover: #ff4b4b;
+}
+
 body {
     margin: 0;
-    height: 100vh;
-    background: radial-gradient(circle, #bdbcbc 0%, #4d4d4d 100%);
+    min-height: 100vh;
+    background: radial-gradient(circle, var(--primary-bg) 0%, var(--secondary-bg) 100%);
     font-family: 'Segoe UI', Arial, sans-serif;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
 }
 
 .top-bar {
@@ -14,9 +26,9 @@ body {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    padding: 0 0 0 16px;
+    padding-left: 16px;
     height: 80px;
-    border-bottom: 6px double #222;
+    border-bottom: 6px double var(--border-color);
     box-sizing: border-box;
     position: relative;
 }
@@ -26,7 +38,7 @@ body {
     font-size: 64px;
     font-weight: 400;
     letter-spacing: 2px;
-    text-shadow: 2px 2px 0 #222, 0 0 8px #fff2;
+    text-shadow: 2px 2px 0 var(--border-color), 0 0 8px #fff2;
     line-height: 80px;
 }
 
@@ -36,19 +48,14 @@ body {
     width: 100vw;
     box-sizing: border-box;
     margin-top: 8px;
-    margin-bottom: 0;
     min-height: 0;
 }
 
 .inv-panel {
-    background: #d3d3d3;
+    background: var(--panel-bg);
     flex: 1 1 0;
-    margin-left: 20px;
-    margin-top: 0;
-    margin-bottom: 12px;
-    margin-right: 20px;
-    border: 4px solid #222;
-    border-radius: 0;
+    margin: 0 20px 12px 20px;
+    border: 4px solid var(--border-color);
     min-width: 0;
     min-height: 600px;
     text-align: center;
@@ -69,18 +76,16 @@ body {
     align-items: stretch;
     width: 260px;
     min-width: 220px;
-    background: none;
     margin: 12px 20px 0 12px;
 }
 
 .side-btn {
-    background: #666;
+    background: var(--btn-bg);
     color: #fff;
     font-size: 1.3em;
     font-weight: bold;
     text-align: center;
     padding: 16px 0;
-    border-radius: 4px;
     margin-bottom: 24px;
     box-shadow: 0 2px 8px #0002;
     border: none;
@@ -95,14 +100,14 @@ body {
 }
 
 .side-btn:hover {
-    background: #888;
+    background: var(--btn-hover);
 }
 
 .bottom-bar {
     width: 100vw;
     background: linear-gradient(90deg, #888 0%, #444 100%);
-    border-top: 4px solid #222;
-    border-bottom: 4px solid #222;
+    border-top: 4px solid var(--border-color);
+    border-bottom: 4px solid var(--border-color);
     box-sizing: border-box;
     height: 64px;
     display: flex;
@@ -121,12 +126,11 @@ body {
 .back-btn, .main-menu-btn {
     margin: 0 24px;
     padding: 10px 48px;
-    background: #ff6b6b;
+    background: var(--action-bg);
     color: #fff;
     font-size: 1.3em;
     font-weight: 700;
     border: none;
-    border-radius: 2px;
     cursor: pointer;
     transition: background 0.2s;
     text-align: center;
@@ -135,7 +139,7 @@ body {
 }
 
 .back-btn:hover, .main-menu-btn:hover {
-    background: #ff4b4b;
+    background: var(--action-hover);
 }
 
 .template-buttons {
@@ -149,10 +153,8 @@ body {
 .template-btn {
     min-width: 180px;
     padding: 16px 12px;
-    margin-bottom: 8px;
-    margin-left: 4px;
-    margin-top: 4px;
-    background: #444;
+    margin: 4px 0 8px 4px;
+    background: var(--header-bg);
     color: #fff;
     border: none;
     font-size: 1.1em;
@@ -162,7 +164,7 @@ body {
 }
 
 .template-btn:hover {
-    background: #ff6b6b;
+    background: var(--action-bg);
 }
 
 .inv-table {
@@ -171,15 +173,17 @@ body {
     margin: 2px auto 0 auto;
     background: #fff;
 }
+
 .inv-table th, .inv-table td {
     border: 1px solid #aaa;
     padding: 0;
     text-align: center;
     font-size: 1em;
 }
+
 .inv-table th {
-    background: #444;
-    color: #fff;
+    background: var(--header-bg);
+    color: var(--header-text);
     font-weight: bold;
 }
 

@@ -10,13 +10,6 @@
     <div class="top-bar">
         <span class="prylo-title">PRYLO</span>
     </div>
-    <div class="input-bar">
-        <label class="input-label">SKU :</label>
-        <input class="input-field" type="text">
-        <label class="input-label">QTY :</label>
-        <input class="input-field qty" type="number">
-        <button class="enter-btn">ENTER</button>
-    </div>
     <div class="main-area">
         <div class="inv-panel">
             <div class="inv-table-container">
@@ -42,15 +35,15 @@
         </div>
     </div>
     <div class="bottom-bar">
-        <button class="back-btn" onclick="window.location.href='cycle-counts.html'">BACK</button>
-        <button class="main-menu-btn" onclick="window.location.href='main-menu.html'">MAIN MENU</button>
+        <button class="back-btn" id="backBtn">BACK</button>
+        <button class="main-menu-btn" id="mainMenuBtn">MAIN MENU</button>
     </div>
     <!-- Add Item Modal -->
-    <div id="addItemModal" class="modal" style="display:none;">
+    <div id="addItemModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
                 <span class="modal-title">Add Item</span>
-                <button class="close-btn" onclick="closeAddItemModal()">&times;</button>
+                <button class="close-btn" id="closeAddItemModalBtn" aria-label="Close">&times;</button>
             </div>
             <form id="addItemForm" class="modal-form">
                 <label>Item #: <input type="text" name="item_num" id="addItemNum" required></label>
@@ -64,11 +57,11 @@
         </div>
     </div>
     <!-- Save Template Modal -->
-    <div id="saveTemplateModal" class="modal" style="display:none;">
+    <div id="saveTemplateModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
                 <span class="modal-title">Save Template</span>
-                <button class="close-btn" onclick="closeSaveTemplateModal()">&times;</button>
+                <button class="close-btn" id="closeSaveTemplateModalBtn" aria-label="Close">&times;</button>
             </div>
             <form id="saveTemplateForm" class="modal-form">
                 <label>Template Name:
@@ -80,11 +73,15 @@
             </form>
         </div>
     </div>
-    <div id="notification" style="display:none;position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#444;color:#fff;padding:12px 32px;border-radius:6px;z-index:2000;font-size:1.1em;box-shadow:0 2px 12px rgba(0,0,0,0.15);"></div>
+    <div id="notification" class="notification"></div>
     <script>
+        // Navigation
+        document.getElementById('backBtn').onclick = () => window.location.href = 'cycle-counts.html';
+        document.getElementById('mainMenuBtn').onclick = () => window.location.href = 'main-menu.html';
+
         // Insert placeholder rows
         const tbody = document.getElementById('inv-table-body');
-        const maxRows = 33;
+        const maxRows = 36;
         for (let i = 0; i < maxRows; i++) {
             const tr = document.createElement('tr');
             for (let j = 0; j < 4; j++) {
@@ -95,17 +92,55 @@
             tbody.appendChild(tr);
         }
 
-        // Open Add Item Modal
-        document.getElementById('addItemBtn').onclick = function() {
-            document.getElementById('addItemModal').style.display = 'flex';
+        // Modal open/close logic
+        const modals = {
+            add: document.getElementById('addItemModal'),
+            save: document.getElementById('saveTemplateModal')
         };
+        document.getElementById('addItemBtn').onclick = () => modals.add.style.display = 'flex';
+        document.getElementById('closeAddItemModalBtn').onclick = closeAddItemModal;
+        document.getElementById('saveTemplateBtn').onclick = openSaveTemplateModal;
+        document.getElementById('closeSaveTemplateModalBtn').onclick = closeSaveTemplateModal;
 
-        // Close Add Item Modal
+        // Close modals when clicking outside modal-content
+        window.addEventListener('click', function(event) {
+            Object.values(modals).forEach(modal => {
+                if (event.target === modal) modal.style.display = 'none';
+            });
+        });
+
         function closeAddItemModal() {
-            document.getElementById('addItemModal').style.display = 'none';
+            modals.add.style.display = 'none';
             document.getElementById('addItemForm').reset();
             document.getElementById('addDescription').value = '';
             document.getElementById('addQis').value = '';
+        }
+        function openSaveTemplateModal() {
+            // Check if there are real rows to save
+            const rows = [];
+            document.querySelectorAll('#inv-table-body tr').forEach(tr => {
+                const tds = tr.querySelectorAll('td');
+                if (tds.length === 4 && tds[0].innerHTML !== '&nbsp;') {
+                    rows.push({
+                        item_num: tds[0].textContent,
+                        description: tds[1].textContent,
+                        qoh: tds[2].textContent,
+                        qis: tds[3].textContent
+                    });
+                }
+            });
+            if (rows.length === 0) {
+                showNotification('No items to save!');
+                return;
+            }
+            window._templateRowsToSave = rows;
+            modals.save.style.display = 'flex';
+            document.getElementById('templateNameInput').value = '';
+            document.getElementById('templateNameInput').focus();
+        }
+        function closeSaveTemplateModal() {
+            modals.save.style.display = 'none';
+            window._templateRowsToSave = null;
         }
 
         // Lookup Item
@@ -151,38 +186,6 @@
             closeAddItemModal();
         });
 
-        // Open Save Template Modal
-        document.getElementById('saveTemplateBtn').onclick = function() {
-            // Check if there are real rows to save
-            const rows = [];
-            document.querySelectorAll('#inv-table-body tr').forEach(tr => {
-                const tds = tr.querySelectorAll('td');
-                if (tds.length === 4 && tds[0].innerHTML !== '&nbsp;') {
-                    rows.push({
-                        item_num: tds[0].textContent,
-                        description: tds[1].textContent,
-                        qoh: tds[2].textContent,
-                        qis: tds[3].textContent
-                    });
-                }
-            });
-            if (rows.length === 0) {
-                showNotification('No items to save!');
-                return;
-            }
-            // Store rows temporarily for saving after naming
-            window._templateRowsToSave = rows;
-            document.getElementById('saveTemplateModal').style.display = 'flex';
-            document.getElementById('templateNameInput').value = '';
-            document.getElementById('templateNameInput').focus();
-        };
-
-        // Close Save Template Modal
-        function closeSaveTemplateModal() {
-            document.getElementById('saveTemplateModal').style.display = 'none';
-            window._templateRowsToSave = null;
-        }
-
         // Handle Save Template Form Submission
         document.getElementById('saveTemplateForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -197,7 +200,6 @@
                 closeSaveTemplateModal();
                 return;
             }
-            // Save to database, not localStorage!
             window.db.saveTemplate(templateName, rows).then(() => {
                 showNotification('Template saved!');
                 closeSaveTemplateModal();

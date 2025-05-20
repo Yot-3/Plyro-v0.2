@@ -9,12 +9,12 @@
     <div class="container">
         <div class="login-box">
             <div class="logo-circle">
-                <img src="../images/SS.png" class="logo-img">
+                <img src="../images/SS.png" class="logo-img" alt="Prylo Logo">
             </div>
             <h1 class="title">PRYLO</h1>
             <hr class="divider">
-            <form>
-                <input type="text" class="input" autocomplete="off" placeholder="Enter Credentials" required>
+            <form novalidate>
+                <input type="text" class="input" autocomplete="username" placeholder="Enter Credentials" required>
                 <button type="submit" class="submit-btn">SUBMIT</button>
             </form>
         </div>
@@ -23,12 +23,6 @@
         const form = document.querySelector('form');
         const input = document.querySelector('.input');
 
-           console.log('window.auth:', window.auth);
-        console.log('window.auth.test:', window.auth && window.auth.test && window.auth.test());
-        console.log('window.auth.getUsers:', window.auth && window.auth.getUsers && window.auth.getUsers());
-   
-        
-        
         window.auth.getUsers().then(users => {
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
@@ -46,11 +40,10 @@
                     }, 1500);
                 }
             });
-        }).catch(err => {
+        }).catch(() => {
             input.placeholder = 'User DB error!';
             input.style.border = '2px solid #ff6b6b';
         });
-      </script>
-
+    </script>
 </body>
 </html>

@@ -1,7 +1,21 @@
+:root {
+    --primary-bg: #bdbcbc;
+    --secondary-bg: #4d4d4d;
+    --box-bg: #575555;
+    --box-bg-dark: #000000;
+    --border-color: #222;
+    --logo-border: #424141;
+    --title-color: #ddd;
+    --divider-color: #222;
+    --input-focus: #ff6b6b;
+    --btn-bg: #ff6b6b;
+    --btn-bg-hover: #ff4b4b;
+}
+
 body {
     margin: 0;
     height: 100vh;
-    background: radial-gradient(circle, #bdbcbc 0%, #4d4d4d 100%);
+    background: radial-gradient(circle, var(--primary-bg) 0%, var(--secondary-bg) 100%);
     font-family: 'Segoe UI', Arial, sans-serif;
 }
 
@@ -13,15 +27,15 @@ body {
 }
 
 .login-box {
-    background: radial-gradient(circle at 50% 40%, #575555 0%, #000000 100%);
+    background: radial-gradient(circle at 50% 40%, var(--box-bg) 0%, var(--box-bg-dark) 100%);
     box-shadow: 0 0 80px #111 inset;
-    padding: 48px 64px 48px 64px;
+    padding: 48px 64px;
     display: flex;
     flex-direction: column;
     align-items: center;
     min-width: 480px;
     position: relative;
-    border: 6px solid #222;
+    border: 6px solid var(--border-color);
 }
 
 .login-box::before,
@@ -30,7 +44,7 @@ body {
     position: absolute;
     left: -14px; right: -14px;
     top: -14px; bottom: -14px;
-    border: 6px solid #222;
+    border: 6px solid var(--border-color);
     pointer-events: none;
     z-index: 0;
 }
@@ -38,18 +52,18 @@ body {
 .login-box::after {
     left: -24px; right: -24px;
     top: -24px; bottom: -24px;
-    border: 6px solid #222;
+    border: 6px solid var(--border-color);
 }
 
 .logo-img {
     width: 120px;
     height: 120px;
     border-radius: 50%;
-    border: 4px solid #424141;
+    border: 4px solid var(--logo-border);
 }
 
 .title {
-    color: #ddd;
+    color: var(--title-color);
     font-size: 64px;
     font-weight: 400;
     letter-spacing: 2px;
@@ -60,7 +74,7 @@ body {
 .divider {
     width: 100%;
     border: none;
-    border-top: 3px solid #222;
+    border-top: 3px solid var(--divider-color);
     margin: 0 0 40px 0;
 }
 
@@ -77,34 +91,32 @@ form {
     font-size: 1.3em;
     text-align: center;
     border: none;
-    border-radius: 2px;
     margin-bottom: 32px;
     background: #fff;
     color: #222;
     box-shadow: 0 2px 8px #0002;
     outline: none;
-    transition: box-shadow 0.2s;
+    transition: box-shadow 0.2s, border 0.2s;
 }
 
 .input:focus {
-    box-shadow: 0 0 0 2px #ff6b6b;
+    box-shadow: 0 0 0 2px var(--input-focus);
 }
 
 .submit-btn {
     width: 350px;
     height: 50px;
     padding: 12px 0;
-    background: #ff6b6b;
+    background: var(--btn-bg);
     color: #fff;
     font-size: 1.3em;
     font-weight: bold;
     border: none;
-    border-radius: 2px;
     cursor: pointer;
     transition: background 0.2s;
     letter-spacing: 1px;
 }
 
 .submit-btn:hover {
-    background: #ff4b4b;
+    background: var(--btn-bg-hover);
 }

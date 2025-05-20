@@ -11,18 +11,28 @@
         <span class="prylo-title">PRYLO</span>
         <span class="welcome">Welcome, User</span>
     </div>
-    <div class="main-content">
+    <main class="main-content">
         <h1 class="main-menu-title">MAIN MENU</h1>
         <div class="menu-list">
-            <div class="menu-btn" onclick="window.location.href='point-of-sale.html'">[A] Point-of-Sale</div>
-            <div class="menu-btn" onclick="window.location.href='purchase-order.html'">[B] Purchase Orders</div>
-            <div class="menu-btn" onclick="window.location.href='display-inv.html'">[C] Inventory Management</div>
-            <div class="menu-btn">[D] Manager Portal</div>
-            <div class="menu-btn">[E] System Settings</div>
+            <button class="menu-btn" data-link="point-of-sale.html">[A] Point-of-Sale</button>
+            <button class="menu-btn" data-link="purchase-order.html">[B] Purchase Orders</button>
+            <button class="menu-btn" data-link="display-inv.html">[C] Inventory Management</button>
+            <button class="menu-btn" disabled>[D] Manager Portal</button>
+            <button class="menu-btn" disabled>[E] System Settings</button>
         </div>
-    </div>
+    </main>
     <div class="bottom-bar">
-        <button class="logout-btn" onclick="window.location.href='index.html'">Log Out</button>
+        <button class="logout-btn" aria-label="Log Out">Log Out</button>
     </div>
+    <script>
+        document.querySelectorAll('.menu-btn[data-link]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                window.location.href = btn.getAttribute('data-link');
+            });
+        });
+        document.querySelector('.logout-btn').addEventListener('click', () => {
+            window.location.href = 'index.html';
+        });
+    </script>
 </body>
 </html>

@@ -29,25 +29,25 @@
             </div>
         </div>
         <div class="side-panel">
-            <button class="side-btn">Edit Items</button>
-            <button class="side-btn" onclick="window.location.href='cycle-counts.html'">Cycle Counts</button>
+            <button class="side-btn" id="editItemsBtn">Edit Items</button>
+            <button class="side-btn" id="cycleCountsBtn">Cycle Counts</button>
         </div>
     </div>
     <div class="bottom-bar">
-        <button class="back-btn" onclick="window.location.href='main-menu.html'">BACK</button>
-        <button class="main-menu-btn" onclick="window.location.href='main-menu.html'">MAIN MENU</button>
+        <button class="back-btn" id="backBtn">BACK</button>
+        <button class="main-menu-btn" id="mainMenuBtn">MAIN MENU</button>
     </div>
     <!-- Modal structure -->
     <div id="editModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
                 <span class="modal-title">Edit Items</span>
-                <button class="close-btn" onclick="closeModal()">&times;</button>
+                <button class="close-btn" id="closeEditModalBtn" aria-label="Close">&times;</button>
             </div>
             <div class="modal-actions">
-                <button class="modal-action-btn">Add</button>
-                <button class="modal-action-btn">Edit</button>
-                <button class="modal-action-btn">Delete</button>
+                <button class="modal-action-btn" id="addItemBtn">Add</button>
+                <button class="modal-action-btn" id="editItemBtn">Edit</button>
+                <button class="modal-action-btn" id="removeItemBtn">Delete</button>
             </div>
         </div>
     </div>
@@ -56,7 +56,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <span class="modal-title">Add Item</span>
-                <button class="close-btn" onclick="closeAddItemModal()">&times;</button>
+                <button class="close-btn" id="closeAddItemModalBtn" aria-label="Close">&times;</button>
             </div>
             <form id="addItemForm" class="modal-form">
                 <label>SKU: <input type="text" name="sku" required></label>
@@ -74,7 +74,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <span class="modal-title">Remove Item</span>
-                <button class="close-btn" onclick="closeRemoveItemModal()">&times;</button>
+                <button class="close-btn" id="closeRemoveItemModalBtn" aria-label="Close">&times;</button>
             </div>
             <form id="removeItemForm" class="modal-form">
                 <label>Item # to Remove: <input type="text" name="item_num" required></label>
@@ -89,7 +89,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <span class="modal-title">Edit Item</span>
-                <button class="close-btn" onclick="closeEditItemModal()">&times;</button>
+                <button class="close-btn" id="closeEditItemModalBtn" aria-label="Close">&times;</button>
             </div>
             <form id="editItemForm" class="modal-form">
                 <label>Item # to Edit: <input type="text" name="item_num" id="editItemNum" required></label>
@@ -104,17 +104,39 @@
         </div>
     </div>
     <script>
-        // Max number of rows
-        const maxRows = 33;
-        const tbody = document.getElementById('inv-table-body');
+        // Navigation
+        document.getElementById('cycleCountsBtn').onclick = () => window.location.href = 'cycle-counts.html';
+        document.getElementById('backBtn').onclick = () => window.location.href = 'main-menu.html';
+        document.getElementById('mainMenuBtn').onclick = () => window.location.href = 'main-menu.html';
 
-        console.log('window.db:', window.db);
-        console.log('window.db.getInventory:', window.db && window.db.getInventory);
+        // Modal open/close
+        const modals = {
+            edit: document.getElementById('editModal'),
+            add: document.getElementById('addItemModal'),
+            remove: document.getElementById('removeItemModal'),
+            editItem: document.getElementById('editItemModal')
+        };
+        document.getElementById('editItemsBtn').onclick = () => modals.edit.style.display = 'flex';
+        document.getElementById('closeEditModalBtn').onclick = () => modals.edit.style.display = 'none';
+        document.getElementById('addItemBtn').onclick = e => { e.preventDefault(); modals.add.style.display = 'flex'; };
+        document.getElementById('closeAddItemModalBtn').onclick = () => modals.add.style.display = 'none';
+        document.getElementById('removeItemBtn').onclick = e => { e.preventDefault(); modals.remove.style.display = 'flex'; };
+        document.getElementById('closeRemoveItemModalBtn').onclick = () => modals.remove.style.display = 'none';
+        document.getElementById('editItemBtn').onclick = e => { e.preventDefault(); modals.editItem.style.display = 'flex'; };
+        document.getElementById('closeEditItemModalBtn').onclick = () => { modals.editItem.style.display = 'none'; document.getElementById('editItemForm').reset(); };
 
-        // Fill table with DB data
-        window.db.getInventory().then(rows => {
-            console.log('DB rows:', rows); // <--- Add this
-            // Fill with DB rows
+        // Close modals when clicking outside modal-content
+        window.addEventListener('click', function(event) {
+            Object.values(modals).forEach(modal => {
+                if (event.target === modal) modal.style.display = 'none';
+            });
+        });
+
+        // Table refresh logic
+        const maxRows = 35;
+        function fillTable(rows) {
+            const tbody = document.getElementById('inv-table-body');
+            tbody.innerHTML = '';
             for (let i = 0; i < maxRows; i++) {
                 const tr = document.createElement('tr');
                 if (rows[i]) {
@@ -133,55 +155,15 @@
                 }
                 tbody.appendChild(tr);
             }
-        }).catch(err => {
-            // If DB fails, just fill with blanks
-            for (let i = 0; i < maxRows; i++) {
-                const tr = document.createElement('tr');
-                for (let j = 0; j < 4; j++) {
-                    const td = document.createElement('td');
-                    td.innerHTML = '&nbsp;';
-                    tr.appendChild(td);
-                }
-                tbody.appendChild(tr);
-            }
-            console.error('DB error:', err);
-        });
-
-        // Open modal when Edit Items button is clicked
-        document.querySelector('.side-btn').onclick = function() {
-            document.getElementById('editModal').style.display = 'flex';
-        };
-        // Close modal function
-        function closeModal() {
-            document.getElementById('editModal').style.display = 'none';
         }
-        // Optional: close modal when clicking outside modal-content
-        window.onclick = function(event) {
-            const modal = document.getElementById('editModal');
-            if (event.target === modal) {
-                closeModal();
-            }
+        function refreshTable() {
+            window.db.getInventory().then(fillTable)
+            .catch(() => fillTable([]));
         }
+        setInterval(refreshTable, 1000);
+        refreshTable();
 
-        // Open Add Item modal when Add button is clicked in Edit Items modal
-        document.querySelectorAll('.modal-action-btn')[0].onclick = function(e) {
-            e.preventDefault();
-            document.getElementById('addItemModal').style.display = 'flex';
-        };
-
-        // Close Add Item modal
-        function closeAddItemModal() {
-            document.getElementById('addItemModal').style.display = 'none';
-        }
-
-        // Optional: close Add Item modal when clicking outside modal-content
-        window.addEventListener('click', function(event) {
-            const addModal = document.getElementById('addItemModal');
-            if (event.target === addModal) {
-                closeAddItemModal();
-            }
-        });
-
+        // Add Item
         document.getElementById('addItemForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const form = e.target;
@@ -192,146 +174,36 @@
                 qis: parseInt(form.qis.value, 10)
             };
             window.db.addItem(item).then(() => {
-                // Close modal
-                document.getElementById('addItemModal').style.display = 'none';
-                // Optionally reset form
+                modals.add.style.display = 'none';
                 form.reset();
-                // Refresh table
-                window.db.getInventory().then(rows => {
-                    const tbody = document.getElementById('inv-table-body');
-                    tbody.innerHTML = '';
-                    const maxRows = 35;
-                    for (let i = 0; i < maxRows; i++) {
-                        const tr = document.createElement('tr');
-                        if (rows[i]) {
-                            tr.innerHTML = `
-                                <td>${rows[i].ITEM_NUM ?? ''}</td>
-                                <td>${rows[i].DESCRIPTION ?? ''}</td>
-                                <td>${rows[i].QIS ?? ''}</td>
-                                <td>${rows[i]['QOH TOTAL'] ?? ''}</td>
-                            `;
-                        } else {
-                            for (let j = 0; j < 4; j++) {
-                                const td = document.createElement('td');
-                                td.innerHTML = '&nbsp;';
-                                tr.appendChild(td);
-                            }
-                        }
-                        tbody.appendChild(tr);
-                    }
-                });
-            }).catch(err => {
-                alert('Failed to add item: ' + err.message);
-            });
+                refreshTable();
+            }).catch(err => alert('Failed to add item: ' + err.message));
         });
 
-        // Open Remove Item modal when Delete button is clicked in Edit Items modal
-        document.querySelectorAll('.modal-action-btn')[2].onclick = function(e) {
-            e.preventDefault();
-            document.getElementById('removeItemModal').style.display = 'flex';
-        };
-
-        // Close Remove Item modal
-        function closeRemoveItemModal() {
-            document.getElementById('removeItemModal').style.display = 'none';
-        }
-
-        // Optional: close Remove Item modal when clicking outside modal-content
-        window.addEventListener('click', function(event) {
-            const removeModal = document.getElementById('removeItemModal');
-            if (event.target === removeModal) {
-                closeRemoveItemModal();
-            }
-        });
-
-        // Handle Remove Item form submission
+        // Remove Item
         document.getElementById('removeItemForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const form = e.target;
             const item_num = form.item_num.value;
             window.db.removeItem(item_num).then(() => {
-                // Close modal
-                closeRemoveItemModal();
-                // Optionally reset form
+                modals.remove.style.display = 'none';
                 form.reset();
-                // Refresh table
                 refreshTable();
-            }).catch(err => {
-                alert('Failed to remove item: ' + err.message);
-            });
+            }).catch(err => alert('Failed to remove item: ' + err.message));
         });
 
-        function refreshTable() {
-            window.db.getInventory().then(rows => {
-                const tbody = document.getElementById('inv-table-body');
-                tbody.innerHTML = '';
-                const maxRows = 35;
-                for (let i = 0; i < maxRows; i++) {
-                    const tr = document.createElement('tr');
-                    if (rows[i]) {
-                        tr.innerHTML = `
-                            <td>${rows[i].ITEM_NUM ?? ''}</td>
-                            <td>${rows[i].DESCRIPTION ?? ''}</td>
-                            <td>${rows[i].QIS ?? ''}</td>
-                            <td>${rows[i]['QOH TOTAL'] ?? ''}</td>
-                        `;
-                    } else {
-                        for (let j = 0; j < 4; j++) {
-                            const td = document.createElement('td');
-                            td.innerHTML = '&nbsp;';
-                            tr.appendChild(td);
-                        }
-                    }
-                    tbody.appendChild(tr);
-                }
-            });
-        }
-
-        // Refresh every 1 seconds
-        setInterval(refreshTable, 1000);
-
-        // Also call once on page load
-        refreshTable();
-
-        // Open Edit Item modal when Edit button is clicked in Edit Items modal
-        document.querySelectorAll('.modal-action-btn')[1].onclick = function(e) {
-            e.preventDefault();
-            document.getElementById('editItemModal').style.display = 'flex';
-        };
-
-        // Close Edit Item modal
-        function closeEditItemModal() {
-            document.getElementById('editItemModal').style.display = 'none';
-            document.getElementById('editItemForm').reset();
-        }
-
-        // Optional: close Edit Item modal when clicking outside modal-content
-        window.addEventListener('click', function(event) {
-            const editModal = document.getElementById('editItemModal');
-            if (event.target === editModal) {
-                closeEditItemModal();
-            }
-        });
-
-        // Fetch item data when Fetch button is clicked
+        // Edit Item
         document.getElementById('fetchItemBtn').onclick = function(e) {
             e.preventDefault();
             const itemNum = document.getElementById('editItemNum').value;
             if (!itemNum) return alert('Enter an Item Number to fetch.');
             window.db.getItem(itemNum).then(item => {
-                if (!item) {
-                    alert('Item not found!');
-                    return;
-                }
+                if (!item) return alert('Item not found!');
                 document.getElementById('editSku').value = item.SKU ?? '';
                 document.getElementById('editDescription').value = item.DESCRIPTION ?? '';
                 document.getElementById('editQis').value = item.QIS ?? '';
-            }).catch(err => {
-                alert('Failed to fetch item: ' + err.message);
-            });
+            }).catch(err => alert('Failed to fetch item: ' + err.message));
         };
-
-        // Handle Edit Item form submission
         document.getElementById('editItemForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const form = e.target;
@@ -342,12 +214,10 @@
                 qis: parseInt(form.qis.value, 10)
             };
             window.db.updateItem(item).then(() => {
-                closeEditItemModal();
+                modals.editItem.style.display = 'none';
                 form.reset();
                 refreshTable();
-            }).catch(err => {
-                alert('Failed to update item: ' + err.message);
-            });
+            }).catch(err => alert('Failed to update item: ' + err.message));
         });
     </script>
 </body>
