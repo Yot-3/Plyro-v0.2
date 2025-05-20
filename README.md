@@ -18,6 +18,7 @@ electron-app
 │   ├── main-menu.html            # HTML structure of the Main Menu (dashboard) page
 │   ├── point-of-sale.html        # HTML structure of the Point of Sale page - Not Operational
 │   ├── purchase-order.html       # HTML structure of the Purchase Orders page - Not Operational
+│   ├──template-view.html         # HTML structure of the Template View page - Not Operational
 │   ├──template.html              # HTML structure of the Template page - Not Operational
 │   └── style
 │       ├── cycle-counts.css       # CSS styles for the cycle counts page
@@ -26,7 +27,6 @@ electron-app
 │       ├── main-menu.css          # CSS styles for the main menu (dashboard) page
 │       ├── point-of-sale.css      # CSS styles for the Point of Sale page
 │       ├── purchase-orders.css    # CSS styles for the Purchase Orders page
-│       ├── template-view.css      # CSS styles for the template view page
 │       └── template.css           # CSS styles for the template page
 │
 ├── package.json         # Configuration file for npm
